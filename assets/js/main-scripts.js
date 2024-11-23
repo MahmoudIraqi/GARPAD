@@ -25,7 +25,7 @@ function setupNavigation() {
     '#main': './pages/main.html',
     '#about': './pages/about.html'
   };
-  const initialPage = currentPath === '/Portal/index.html' ? contentMap['#main'] : contentMap[contentMap];
+  const initialPage = currentPath === '/Portal/index.html' || currentPath === '/' ? contentMap['#main'] : contentMap[contentMap];
 
   loadContent( initialPage );
   loadAllContentWhenNavigate()
