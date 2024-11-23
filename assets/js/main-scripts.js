@@ -1,16 +1,18 @@
 function loadContent( file ) {
-  fetch( file )
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.text();
-    })
-    .then( data => {
-      document.getElementById( 'main-body' ).innerHTML = data;
-      loadAllContentWhenNavigate()
-    } )
-    .catch( err => console.error( 'Error loading content:', err ) );
+  if( file ) {
+    fetch( file )
+      .then( response => {
+        if( !response.ok ) {
+          throw new Error( `HTTP error! Status: ${response.status}` );
+        }
+        return response.text();
+      } )
+      .then( data => {
+        document.getElementById( 'main-body' ).innerHTML = data;
+        loadAllContentWhenNavigate()
+      } )
+      .catch( err => console.error( 'Error loading content:', err ) );
+  }
 }
 
 function setupNavigation() {
