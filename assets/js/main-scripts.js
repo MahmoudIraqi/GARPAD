@@ -13,7 +13,7 @@ function loadContent( file ) {
 
         if( file === './pages/about.html' ) {
           loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
-            title: "عن الهيئة", tabs:['Mahmoud', 'Heba', 'Melia']
+            title: "عن الهيئة", tabs:['عن الهيئة', 'اختصاصات الهيئة', 'كلمة رئيس الهيئة','مجلس الإدارة','رؤساء الهيئة السابقين','الهيكل التنظيمي','القوانين واللوائح']
           } );
         }
       } )
