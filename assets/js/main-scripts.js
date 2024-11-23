@@ -20,9 +20,6 @@ function setupNavigation() {
 
   // Load content for the default page
   const currentPath = window.location.pathname;
-  const currentPathHash = window.location.hash;
-  console.log('currentPath',currentPath)
-  console.log('currentPathHash',currentPathHash)
   const contentMap = {
     '#main': './pages/main.html',
     '#about': './pages/about.html'
