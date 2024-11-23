@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'HelveticaNeueLT Arabic 55 Roman';
+    src: url('/assets/fonts/HelveticaNeueLT Arabic 55 Roman/HelveticaNeueLT Arabic 55 Roman.woff2') format('woff2'),
+    url('/assets/fonts/HelveticaNeueLT Arabic 55 Roman/HelveticaNeueLT Arabic 55 Roman.woff') format('woff'),
+    url('/assets/fonts/HelveticaNeueLT Arabic 55 Roman/HelveticaNeueLT Arabic 55 Roman.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'HelveticaNeueLT Arabic 75 Bold';
+    src: url('/assets/fonts/HelveticaNeueLT Arabic 75 Bold/HelveticaNeueLT Arabic 75 Bold.woff2') format('woff2'),
+    url('/assets/fonts/HelveticaNeueLT Arabic 75 Bold/HelveticaNeueLT Arabic 75 Bold.woff') format('woff'),
+    url('/assets/fonts/HelveticaNeueLT Arabic 75 Bold/HelveticaNeueLT Arabic 75 Bold.ttf') format('truetype');
+}
+
+body {
+    font-family: "HelveticaNeueLT Arabic 55 Roman";
+    font-size: 16px;
+}
+
+/* Button hover animation effect */
+.effect {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    z-index: 1;
+    opacity: 0;
+    transition-duration: .75s;
+}
+
+button:hover .effect {
+    transform: scale(75);
+    transform-origin: center;
+    opacity: 1;
+    transition-duration: .75s;
+}
+
+/* Search placeholder */
+input::placeholder {
+    color: rgba(255, 255, 255, 0.6); /* Placeholder text color */
+    opacity: 1; /* Set opacity to ensure color is visible */
+    font-size: 14px;
+    line-height: 14px;
+    position: absolute;
+}
+
+/* product slick slider */
+.latest-items-product .slick-track {
+    overflow-x: hidden;
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 2rem;
+}
+
+.latest-items-projects .slick-track {
+    overflow-x: hidden;
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 2rem;
+}
+
+.slick-prev, .slick-next {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    bottom: 0;
+    color: #B9CB31;
+    background: #FFFFFF;
+    border: 1px solid #B9CB31;
+    box-shadow: 0px 4px 2px rgba(59, 91, 50, 0.25), inset 0px 0px 2px rgba(59, 91, 50, 0.25);
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.slick-prev:hover, .slick-next:hover {
+    transform: scale(1);
+    transform-origin: center;
+    opacity: 1;
+    transition-duration: .75s;
+    background: #3B5B32;
+    color: #FFFFFF;
+}
+
+.slick-next {
+    right: 60px
+}

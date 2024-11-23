@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/slick.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <title>الهيئة العامة لمشروعات التعمير و التنمية الزراعية</title>
+    <script src="assets/js/tailwind-script.js"></script>
+    <script src="assets/js/tailwind.config.js"></script>
+    <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/slick.min.js"></script>
+  </head>
+  <body dir="rtl">
+    <div id="header-placeholder"></div>
+    <div id="main-body"></div>
+    <div id="footer-placeholder"></div>
+
+
+    <script>
+      // Load header from external file
+      fetch( './pages/header.html' )
+        .then( response => response.text() )
+        .then( data => {
+          document.getElementById( 'header-placeholder' ).innerHTML = data;
+        } );
+      // Load header from external file
+      fetch( './pages/footer.html' )
+        .then( response => response.text() )
+        .then( data => {
+          document.getElementById( 'footer-placeholder' ).innerHTML = data;
+          setupNavigation(); // Setup navigation after loading header
+          loadAllContentWhenNavigate()
+        } );
+    </script>
+    <script src="assets/js/main-scripts.js"></script>
+  </body>
+</html>
