@@ -286,24 +286,24 @@ function loadAllContentWhenNavigate() {
 
     if(horizontalTabs && contents_horizontal_tabs) {
       horizontalTabs.forEach( ( t ) => t.classList.remove( "tw-bg-gray-secondary", "!tw-border-primary" ) );
-      contents_horizontal_tabs.forEach( ( pane ) => pane.classList.add( "tw-hidden" ) );
 
       // Add click event listener to each tab
       horizontalTabs.forEach( ( el, index ) => {
-        el.addEventListener( "click", () => {
-          // Remove 'active' class from all tabs and hide all panes
+        el.addEventListener('click', function () {
           horizontalTabs.forEach( ( t ) => t.classList.remove( "tw-bg-gray-secondary", "!tw-border-primary" ) );
-          contents_horizontal_tabs.forEach( ( pane ) => pane.classList.add( "tw-hidden" ) );
 
-          // Add 'active' class to clicked tab and show corresponding pane
+          const targetSection = contents_horizontal_tabs[index]; // Get the corresponding section based on the index of the tab
+          targetSection.scrollIntoView({
+            behavior: 'smooth', // Scroll smoothly
+            block: 'start' // Align to the top of the section
+          });
+
           el.classList.add( "tw-bg-gray-secondary", "!tw-border-primary" );
-          contents_horizontal_tabs[index].classList.remove( "tw-hidden" );
-        } );
+        });
       } );
 
       // Initialize the first tab and pane as active
       horizontalTabs[0].classList.add( "tw-bg-gray-secondary", "!tw-border-primary" );
-      contents_horizontal_tabs[0].classList.remove( "tw-hidden" );
     }
   }, 200 ); // adjust the delay as necessary
 }
