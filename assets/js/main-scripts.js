@@ -1,6 +1,11 @@
 function loadContent( file ) {
   fetch( file )
-    .then( response => response.text() )
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
     .then( data => {
       document.getElementById( 'main-body' ).innerHTML = data;
       loadAllContentWhenNavigate()
