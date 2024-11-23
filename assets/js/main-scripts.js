@@ -16,6 +16,7 @@ function loadContent( file ) {
 }
 
 function setupNavigation() {
+  debugger;
   const navLinks = document.querySelectorAll( '.nav-link' );
 
   // Load content for the default page
