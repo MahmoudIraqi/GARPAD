@@ -9,9 +9,57 @@ function loadContent( file ) {
       } )
       .then( data => {
         document.getElementById( 'main-body' ).innerHTML = data;
-        loadAllContentWhenNavigate()
+        loadAllContentWhenNavigate();
+
+        if( file === './pages/about.html' ) {
+          loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
+            title: "عن الهيئة",
+          } );
+        }
       } )
       .catch( err => console.error( 'Error loading content:', err ) );
+  }
+}
+
+// Function to load reusable component and pass data
+async function loadComponent( url, placeholderId, data ) {
+  try {
+    console.log( `Fetching component from: ${url}` );
+    const response = await fetch( url );
+
+    if( !response.ok ) {
+      throw new Error( `HTTP error! Status: ${response.status}` );
+    }
+
+    const componentHTML = await response.text();
+    console.log( "Fetched component content:", componentHTML );
+
+    // Parse and inject the component
+    const parser = new DOMParser();
+    const doc = parser.parseFromString( componentHTML, "text/html" );
+
+    // Inject the title
+    const titleElement = doc.getElementById( "component-title" );
+    if( titleElement ) {
+      console.log( `Setting title to: ${data.title}` );
+      titleElement.textContent = data.title;
+    }
+    else {
+      console.warn( "Title element not found in the component." );
+    }
+
+    // Inject into the placeholder
+    const placeholder = document.getElementById( placeholderId );
+    if( placeholder ) {
+      placeholder.innerHTML = doc.body.innerHTML;
+      console.log( "Component injected successfully." );
+    }
+    else {
+      console.error( "Placeholder not found:", placeholderId );
+    }
+  }
+  catch( error ) {
+    console.error( "Error in loadComponent:", error );
   }
 }
 
@@ -68,6 +116,7 @@ function loadAllContentWhenNavigate() {
     let testimonialsDelay = Number( $testimonialsElement.data( "delay" ) ) || 24000;
     const $testimonialsBadgeElement = $( ".testimonials-badge" );
     const $testimonialsNoStartElement = $( ".testimonials.no-start" );
+    const $testimonialsControl = $( ".testimonials-control" );
     const $slideItemsElement = $( ".testimonials-text" );
     const $dataItems = Number( $( '.testimonials' ).data( 'items' ) );
 
@@ -157,7 +206,7 @@ function loadAllContentWhenNavigate() {
         .attr( "style", "background: #fff; !important" );
     } );
 
-    $( ".testimonials-control" ).on( "mouseleave", function () {
+    $testimonialsControl.on( "mouseleave", function () {
       if(
         testimonialsInterval == null &&
         $testimonialsNoStartElement.length === 0
