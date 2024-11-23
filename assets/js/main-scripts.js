@@ -13,7 +13,7 @@ function loadContent( file ) {
 
         if( file === './pages/about.html' ) {
           loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
-            title: "عن الهيئة",
+            title: "عن الهيئة", tabs:['Mahmoud', 'Heba', 'Melia']
           } );
         }
       } )
@@ -40,12 +40,25 @@ async function loadComponent( url, placeholderId, data ) {
 
     // Inject the title
     const titleElement = doc.getElementById( "component-title" );
+    const tabsElements = doc.getElementById( "render_tabs" );
     if( titleElement ) {
       console.log( `Setting title to: ${data.title}` );
       titleElement.textContent = data.title;
     }
     else {
       console.warn( "Title element not found in the component." );
+    }
+
+    if(tabsElements){
+      // Loop through the tab data to create tabs and panes
+      data.tabs?.forEach((tabName, index) => {
+        // Create and append tab element
+        const tabElement = document.createElement("div");
+        tabElement.classList.add("tabs_list_item", "tw-py-3", "tw-text-primary", "tw-border-b-2", "tw-cursor-pointer", "tw-border-transparent", "hover:tw-border-b-2", "hover:tw-border-secondary");
+        tabElement.textContent = tabName;
+        tabElement.setAttribute("data-index", index);
+        tabsElements.appendChild(tabElement);
+      });
     }
 
     // Inject into the placeholder
@@ -241,6 +254,57 @@ function loadAllContentWhenNavigate() {
       slidesToShow: 1,
       slidesToScroll: 1,
     } );
+
+    const tabs = document.querySelectorAll( ".tabs_list_item" );
+    const panes = document.querySelectorAll( ".pane" );
+
+    if(tabs && panes) {
+      tabs.forEach( ( t ) => t.classList.remove( "!tw-border-secondary" ) );
+      panes.forEach( ( pane ) => pane.classList.add( "tw-hidden" ) );
+
+      // Add click event listener to each tab
+      tabs.forEach( ( tab, index ) => {
+        tab.addEventListener( "click", () => {
+          // Remove 'active' class from all tabs and hide all panes
+          tabs.forEach( ( t ) => t.classList.remove( "!tw-border-secondary" ) );
+          panes.forEach( ( pane ) => pane.classList.add( "tw-hidden" ) );
+
+          // Add 'active' class to clicked tab and show corresponding pane
+          tab.classList.add( "!tw-border-secondary" );
+          panes[index].classList.remove( "tw-hidden" );
+        } );
+      } );
+
+      // Initialize the first tab and pane as active
+      tabs[0].classList.add( "!tw-border-secondary" );
+      panes[0].classList.remove( "tw-hidden" );
+    }
+
+
+    const horizontalTabs = document.querySelectorAll( ".horizontal_tabs" );
+    const contents_horizontal_tabs = document.querySelectorAll( ".contents_horizontal_tabs" );
+
+    if(horizontalTabs && contents_horizontal_tabs) {
+      horizontalTabs.forEach( ( t ) => t.classList.remove( "tw-bg-gray-secondary", "!tw-border-primary" ) );
+      contents_horizontal_tabs.forEach( ( pane ) => pane.classList.add( "tw-hidden" ) );
+
+      // Add click event listener to each tab
+      horizontalTabs.forEach( ( el, index ) => {
+        el.addEventListener( "click", () => {
+          // Remove 'active' class from all tabs and hide all panes
+          horizontalTabs.forEach( ( t ) => t.classList.remove( "tw-bg-gray-secondary", "!tw-border-primary" ) );
+          contents_horizontal_tabs.forEach( ( pane ) => pane.classList.add( "tw-hidden" ) );
+
+          // Add 'active' class to clicked tab and show corresponding pane
+          el.classList.add( "tw-bg-gray-secondary", "!tw-border-primary" );
+          contents_horizontal_tabs[index].classList.remove( "tw-hidden" );
+        } );
+      } );
+
+      // Initialize the first tab and pane as active
+      horizontalTabs[0].classList.add( "tw-bg-gray-secondary", "!tw-border-primary" );
+      contents_horizontal_tabs[0].classList.remove( "tw-hidden" );
+    }
   }, 200 ); // adjust the delay as necessary
 }
 
