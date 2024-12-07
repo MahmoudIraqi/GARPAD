@@ -3,6 +3,8 @@ const contentMap = {
   '#about': './pages/about.html',
   '#activities': './pages/activities.html',
   '#activities/detailed': './pages/detailed_activities.html',
+  '#media': './pages/media_center.html',
+  '#media/detailedNews': './pages/detailed_news.html',
 };
 
 function loadContent( file, parent_file ) {
@@ -26,6 +28,12 @@ function loadContent( file, parent_file ) {
         if( parent_file === './pages/activities.html' || file === './pages/activities.html' ) {
           loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
             title: "أنشطة الهيئة", tabs: ['المشروعات', 'الفرص الاستثمارية', 'المعامل']
+          }, parent_file );
+        }
+
+        if( parent_file === './pages/media_center.html' || file === './pages/media_center.html' ) {
+          loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
+            title: "المركز الاعلامي", tabs: ['الاخبار', 'الاعلانات', 'معرض الفيديوهات', 'معرض الصور']
           }, parent_file );
         }
         document.getElementById( 'main-body' ).innerHTML = data;

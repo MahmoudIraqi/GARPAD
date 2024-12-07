@@ -31,6 +31,7 @@ tailwind.config = {
         gray:{
           main: "#DDDDDD",
           secondary: "#F2F2F2",
+          text: "#C4C4C4",
           25: "rgba(221,221,221,0.25)"
         },
         gradient_bg:{
