@@ -4,7 +4,9 @@ const contentMap = {
   '#activities': './pages/activities.html',
   '#activities/detailed': './pages/detailed_activities.html',
   '#media': './pages/media_center.html',
-  '#media/detailedNews': './pages/detailed_news.html',
+  '#media/detailed': './pages/detailed_news.html',
+  '#services': './pages/services.html',
+  '#services/detailed': './pages/services_detailed.html',
 };
 
 function loadContent( file, parent_file ) {
@@ -34,6 +36,12 @@ function loadContent( file, parent_file ) {
         if( parent_file === './pages/media_center.html' || file === './pages/media_center.html' ) {
           loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
             title: "المركز الاعلامي", tabs: ['الاخبار', 'الاعلانات', 'معرض الفيديوهات', 'معرض الصور']
+          }, parent_file );
+        }
+
+        if( parent_file === './pages/services.html' || file === './pages/services.html' ) {
+          loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
+            title: "الخدمات", tabs: []
           }, parent_file );
         }
         document.getElementById( 'main-body' ).innerHTML = data;
@@ -147,6 +155,46 @@ function navigateToDetailedPage( href, data ) {
 
   // Load the new content
   loadContent( contentMap[href], contentMap[parent_href] );
+}
+
+function filterTab( type ) {
+  const filteredByTabs = document.querySelectorAll( '.filtered-by-tab' );
+  const filterTabs = document.querySelectorAll( '.filter-tab' );
+
+  filterTabs.forEach( ( tab ) => {
+    const dataItems = tab.getAttribute( 'data-items' );
+    const spanElement = tab.querySelector('span');
+
+    if( dataItems === type ) {
+      tab.classList.add( 'tw-bg-primary' );
+      spanElement.classList.add( 'tw-text-white-100' );
+      tab.classList.remove( 'tw-bg-transparent' );
+      spanElement.classList.remove( 'tw-text-text' );
+    }
+    else {
+      tab.classList.add( 'tw-bg-transparent' );
+      spanElement.classList.add( 'tw-text-text' );
+      tab.classList.remove( 'tw-bg-primary' );
+      spanElement.classList.remove( 'tw-text-white-100' );
+    }
+  } );
+  filteredByTabs.forEach( ( tab ) => {
+    const dataItems = tab.getAttribute( 'data-items' );
+    if( type === 'all' ) {
+      tab.classList.remove( 'tw-hidden' );
+      tab.classList.add( 'tw-visible' );
+    }
+    else {
+      if( dataItems === type ) {
+        tab.classList.add( 'tw-visible' );
+        tab.classList.remove( 'tw-hidden' );
+      }
+      else {
+        tab.classList.add( 'tw-hidden' );
+        tab.classList.remove( 'tw-visible' );
+      }
+    }
+  } );
 }
 
 function loadAllContentWhenNavigate() {
@@ -347,7 +395,9 @@ function loadAllContentWhenNavigate() {
       slidesToShow: 1.675,
       slidesToScroll: 1,
     } );
-    $('.detailed-slider').slick('setPosition');
+    $( '.detailed-slider' ).slick( 'setPosition' );
+
+    filterTab('all')
   }, 200 ); // adjust the delay as necessary
 }
 
