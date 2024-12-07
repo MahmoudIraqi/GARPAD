@@ -1,4 +1,11 @@
-function loadContent( file ) {
+const contentMap = {
+  '#main': './pages/main.html',
+  '#about': './pages/about.html',
+  '#activities': './pages/activities.html',
+  '#activities/detailed': './pages/detailed_activities.html',
+};
+
+function loadContent( file, parent_file ) {
   if( file ) {
     fetch( file )
       .then( response => {
@@ -8,21 +15,28 @@ function loadContent( file ) {
         return response.text();
       } )
       .then( data => {
+        if( parent_file === './pages/about.html' || file === './pages/about.html' ) {
+          loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
+            title: "عن الهيئة",
+            tabs: ['عن الهيئة', 'اختصاصات الهيئة', 'كلمة رئيس الهيئة', 'مجلس الإدارة', 'رؤساء الهيئة السابقين', 'الهيكل التنظيمي',
+              'القوانين واللوائح']
+          }, parent_file );
+        }
+
+        if( parent_file === './pages/activities.html' || file === './pages/activities.html' ) {
+          loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
+            title: "أنشطة الهيئة", tabs: ['المشروعات', 'الفرص الاستثمارية', 'المعامل']
+          }, parent_file );
+        }
         document.getElementById( 'main-body' ).innerHTML = data;
         loadAllContentWhenNavigate();
-
-        if( file === './pages/about.html' ) {
-          loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
-            title: "عن الهيئة", tabs:['عن الهيئة', 'اختصاصات الهيئة', 'كلمة رئيس الهيئة','مجلس الإدارة','رؤساء الهيئة السابقين','الهيكل التنظيمي','القوانين واللوائح']
-          } );
-        }
       } )
       .catch( err => console.error( 'Error loading content:', err ) );
   }
 }
 
 // Function to load reusable component and pass data
-async function loadComponent( url, placeholderId, data ) {
+async function loadComponent( url, placeholderId, data, parent_file ) {
   try {
     console.log( `Fetching component from: ${url}` );
     const response = await fetch( url );
@@ -49,16 +63,17 @@ async function loadComponent( url, placeholderId, data ) {
       console.warn( "Title element not found in the component." );
     }
 
-    if(tabsElements){
+    if( tabsElements ) {
       // Loop through the tab data to create tabs and panes
-      data.tabs?.forEach((tabName, index) => {
+      data.tabs?.forEach( ( tabName, index ) => {
         // Create and append tab element
-        const tabElement = document.createElement("div");
-        tabElement.classList.add("tabs_list_item", "tw-py-3", "tw-text-primary", "tw-border-b-2", "tw-cursor-pointer", "tw-border-transparent", "hover:tw-border-b-2", "hover:tw-border-secondary");
+        const tabElement = document.createElement( "div" );
+        tabElement.classList.add( "tabs_list_item", "tw-py-3", "tw-text-primary", "tw-border-b-2", "tw-cursor-pointer",
+          "tw-border-transparent", "hover:tw-border-b-2", "hover:tw-border-secondary" );
         tabElement.textContent = tabName;
-        tabElement.setAttribute("data-index", index);
-        tabsElements.appendChild(tabElement);
-      });
+        tabElement.setAttribute( "data-index", index );
+        tabsElements.appendChild( tabElement );
+      } );
     }
 
     // Inject into the placeholder
@@ -81,10 +96,6 @@ function setupNavigation() {
 
   // Load content for the default page
   const currentPath = window.location.pathname;
-  const contentMap = {
-    '#main': './pages/main.html',
-    '#about': './pages/about.html'
-  };
   const initialPage = currentPath === '/Portal/index.html' || currentPath === '/' ? contentMap['#main'] : contentMap[contentMap];
 
   loadContent( initialPage );
@@ -117,6 +128,17 @@ function setupNavigation() {
       );
     } );
   } );
+}
+
+function navigateToDetailedPage( href, data ) {
+  const detailed_flag = href.split( '/' )[1] === 'detailed';
+  const parent_href = href.split( '/' )[0];
+  console.log( 'detailed_flag', detailed_flag )
+  // Update URL in the address bar without reloading the page
+  window.history.pushState( {}, '', href );
+
+  // Load the new content
+  loadContent( contentMap[href], contentMap[parent_href] );
 }
 
 function loadAllContentWhenNavigate() {
@@ -241,7 +263,6 @@ function loadAllContentWhenNavigate() {
       slidesToShow: 4.5,
       slidesToScroll: 1,
     } );
-
     $( '.latest-items-projects' ).slick( {
       rtl: true,
       dots: false,
@@ -258,7 +279,7 @@ function loadAllContentWhenNavigate() {
     const tabs = document.querySelectorAll( ".tabs_list_item" );
     const panes = document.querySelectorAll( ".pane" );
 
-    if(tabs && panes) {
+    if( tabs && panes ) {
       tabs.forEach( ( t ) => t.classList.remove( "!tw-border-secondary" ) );
       panes.forEach( ( pane ) => pane.classList.add( "tw-hidden" ) );
 
@@ -276,35 +297,49 @@ function loadAllContentWhenNavigate() {
       } );
 
       // Initialize the first tab and pane as active
-      tabs[0].classList.add( "!tw-border-secondary" );
-      panes[0].classList.remove( "tw-hidden" );
+      tabs[0]?.classList.add( "!tw-border-secondary" );
+      panes[0]?.classList.remove( "tw-hidden" );
     }
-
 
     const horizontalTabs = document.querySelectorAll( ".horizontal_tabs" );
     const contents_horizontal_tabs = document.querySelectorAll( ".contents_horizontal_tabs" );
 
-    if(horizontalTabs && contents_horizontal_tabs) {
+    if( horizontalTabs && contents_horizontal_tabs ) {
       horizontalTabs.forEach( ( t ) => t.classList.remove( "tw-bg-gray-secondary", "!tw-border-primary" ) );
 
       // Add click event listener to each tab
       horizontalTabs.forEach( ( el, index ) => {
-        el.addEventListener('click', function () {
+        el.addEventListener( 'click', function () {
           horizontalTabs.forEach( ( t ) => t.classList.remove( "tw-bg-gray-secondary", "!tw-border-primary" ) );
 
           const targetSection = contents_horizontal_tabs[index]; // Get the corresponding section based on the index of the tab
-          targetSection.scrollIntoView({
+          targetSection.scrollIntoView( {
             behavior: 'smooth', // Scroll smoothly
             block: 'start' // Align to the top of the section
-          });
+          } );
 
           el.classList.add( "tw-bg-gray-secondary", "!tw-border-primary" );
-        });
+        } );
       } );
 
       // Initialize the first tab and pane as active
-      horizontalTabs[0].classList.add( "tw-bg-gray-secondary", "!tw-border-primary" );
+      horizontalTabs[0]?.classList.add( "tw-bg-gray-secondary", "!tw-border-primary" );
     }
+
+    $( '.detailed-slider' ).slick( {
+      rtl: true,
+      dots: false,
+      infinite: true,
+      autoplay: false,
+      centerPadding: '10%',
+      autoplaySpeed: 2500,
+      arrows: true,
+      prevArrow: '<button type="button" class="slick-prev"><i class="bi bi-chevron-right"></i></button>',
+      nextArrow: '<button type="button" class="slick-next"><i class="bi bi-chevron-left"></i></button>',
+      slidesToShow: 1.675,
+      slidesToScroll: 1,
+    } );
+    $('.detailed-slider').slick('setPosition');
   }, 200 ); // adjust the delay as necessary
 }
 

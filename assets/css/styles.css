@@ -53,6 +53,7 @@ input::placeholder {
     display: flex;
     gap: 1rem;
     padding-bottom: 2rem;
+    transition:all ease-in-out 0.3s;
 }
 
 .latest-items-projects .slick-track {
@@ -60,6 +61,26 @@ input::placeholder {
     display: flex;
     gap: 1rem;
     padding-bottom: 2rem;
+}
+
+.detailed-slider .slick-track {
+    overflow-x: hidden;
+    display: flex;
+    gap: 0 48px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    align-items: center;
+}
+
+.detailed-slider .slick-track img{
+    opacity: 0.5;
+    height: 340px;
+}
+
+.detailed-slider .slick-current.slick-active img{
+    opacity: 1;
+    width: 1280px;
+    height: 470px;
 }
 
 .slick-prev, .slick-next {
@@ -86,4 +107,12 @@ input::placeholder {
 
 .slick-next {
     right: 60px
+}
+
+.detailed-slider .slick-prev {
+    right: calc(50% - 30px)
+}
+
+.detailed-slider .slick-next {
+    right: calc(50% + 30px)
 }
