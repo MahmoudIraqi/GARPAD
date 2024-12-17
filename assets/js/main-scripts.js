@@ -7,6 +7,8 @@ const contentMap = {
   '#media/detailed': './pages/detailed_news.html',
   '#services': './pages/services.html',
   '#services/detailed': './pages/services_detailed.html',
+  '#publications': './pages/publications.html',
+  '#contactus': './pages/contact_us.html',
 };
 
 function loadContent( file, parent_file ) {
@@ -44,6 +46,18 @@ function loadContent( file, parent_file ) {
             title: "الخدمات", tabs: []
           }, parent_file );
         }
+
+        if( parent_file === './pages/publications.html' || file === './pages/publications.html' ) {
+          loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
+            title: "إصدارات الهيئة", tabs: ['بيانات إحصائية', 'دراسات الجدوى', 'الكتيبات الاسترشادية']
+          }, parent_file );
+        }
+
+        if( parent_file === './pages/contact_us.html' || file === './pages/contact_us.html' ) {
+          loadComponent( "./pages/resuable_component/inside_header.html", "inside-header", {
+            title: "يمكننا المساعدة", tabs: ['تواصل معنا', 'الاسئلة الشائعة']
+          }, parent_file );
+        }
         document.getElementById( 'main-body' ).innerHTML = data;
         loadAllContentWhenNavigate();
       } )
@@ -54,7 +68,6 @@ function loadContent( file, parent_file ) {
 // Function to load reusable component and pass data
 async function loadComponent( url, placeholderId, data, parent_file ) {
   try {
-    console.log( `Fetching component from: ${url}` );
     const response = await fetch( url );
 
     if( !response.ok ) {
@@ -62,7 +75,6 @@ async function loadComponent( url, placeholderId, data, parent_file ) {
     }
 
     const componentHTML = await response.text();
-    console.log( "Fetched component content:", componentHTML );
 
     // Parse and inject the component
     const parser = new DOMParser();
@@ -72,7 +84,6 @@ async function loadComponent( url, placeholderId, data, parent_file ) {
     const titleElement = doc.getElementById( "component-title" );
     const tabsElements = doc.getElementById( "render_tabs" );
     if( titleElement ) {
-      console.log( `Setting title to: ${data.title}` );
       titleElement.textContent = data.title;
     }
     else {
@@ -96,7 +107,6 @@ async function loadComponent( url, placeholderId, data, parent_file ) {
     const placeholder = document.getElementById( placeholderId );
     if( placeholder ) {
       placeholder.innerHTML = doc.body.innerHTML;
-      console.log( "Component injected successfully." );
     }
     else {
       console.error( "Placeholder not found:", placeholderId );
@@ -149,7 +159,6 @@ function setupNavigation() {
 function navigateToDetailedPage( href, data ) {
   const detailed_flag = href.split( '/' )[1] === 'detailed';
   const parent_href = href.split( '/' )[0];
-  console.log( 'detailed_flag', detailed_flag )
   // Update URL in the address bar without reloading the page
   window.history.pushState( {}, '', href );
 
@@ -163,7 +172,7 @@ function filterTab( type ) {
 
   filterTabs.forEach( ( tab ) => {
     const dataItems = tab.getAttribute( 'data-items' );
-    const spanElement = tab.querySelector('span');
+    const spanElement = tab.querySelector( 'span' );
 
     if( dataItems === type ) {
       tab.classList.add( 'tw-bg-primary' );
@@ -278,8 +287,6 @@ function loadAllContentWhenNavigate() {
 
     $testimonialsBadgeElement.on( "click", function ( e ) {
       e.preventDefault();
-
-      console.log( '1234', this )
       const n = $( this ).data( "index" );
 
       stopAutoLoad();
@@ -397,7 +404,37 @@ function loadAllContentWhenNavigate() {
     } );
     $( '.detailed-slider' ).slick( 'setPosition' );
 
-    filterTab('all')
+    filterTab( 'all' )
+
+    // Select the form
+    const form = document.querySelector(".contactUs form");
+
+    // Handle the form's submit event
+    form.addEventListener("submit", (event) => {
+      // Prevent the form from submitting to the server
+      event.preventDefault();
+
+      // Collect form data
+      const fullName = form.querySelector('input[placeholder="الاسم بالكامل"]').value;
+      const phoneNumber = form.querySelector('input[placeholder="رقم التليفون"]').value;
+      const email = form.querySelector('input[placeholder="البريد الالكتروني"]').value;
+      const comment = form.querySelector('textarea[placeholder="تعليقك"]').value;
+      const isNotRobot = form.querySelector('input[type="checkbox"]').checked;
+
+      // Create an object with the collected data
+      const formData = {
+        fullName,
+        phoneNumber,
+        email,
+        comment,
+        isNotRobot
+      };
+
+      // Log the form data to the console
+      console.log("Collected Form Data:", formData);
+
+      // You can send the data to the server here (e.g., using fetch or axios)
+    });
   }, 200 ); // adjust the delay as necessary
 }
 
