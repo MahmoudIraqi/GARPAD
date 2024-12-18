@@ -53,7 +53,7 @@ input::placeholder {
     display: flex;
     gap: 1rem;
     padding-bottom: 2rem;
-    transition:all ease-in-out 0.3s;
+    transition: all ease-in-out 0.3s;
 }
 
 .latest-items-projects .slick-track {
@@ -72,12 +72,12 @@ input::placeholder {
     align-items: center;
 }
 
-.detailed-slider .slick-track img{
+.detailed-slider .slick-track img {
     opacity: 0.5;
     height: 340px;
 }
 
-.detailed-slider .slick-current.slick-active img{
+.detailed-slider .slick-current.slick-active img {
     opacity: 1;
     width: 1280px;
     height: 470px;
@@ -115,4 +115,13 @@ input::placeholder {
 
 .detailed-slider .slick-next {
     right: calc(50% + 30px)
+}
+
+.specific-text-style {
+    max-height: 150px; /* Set the maximum height */
+    overflow: hidden; /* Hide the overflowing text */
+    display: -webkit-box; /* Use flex-like behavior for limiting lines */
+    -webkit-line-clamp: 3; /* Limit to a specific number of lines */
+    -webkit-box-orient: vertical; /* Set the box orientation to vertical */
+    text-overflow: ellipsis; /* Add the ellipsis effect */
 }
