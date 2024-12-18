@@ -393,7 +393,7 @@ function loadAllContentWhenNavigate() {
       rtl: true,
       dots: false,
       infinite: true,
-      autoplay: false,
+      autoplay: true,
       centerPadding: '10%',
       autoplaySpeed: 2500,
       arrows: true,
@@ -410,7 +410,7 @@ function loadAllContentWhenNavigate() {
     const form = document.querySelector(".contactUs form");
 
     // Handle the form's submit event
-    form.addEventListener("submit", (event) => {
+    form?.addEventListener("submit", (event) => {
       // Prevent the form from submitting to the server
       event.preventDefault();
 
