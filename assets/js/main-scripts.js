@@ -407,19 +407,19 @@ function loadAllContentWhenNavigate() {
     filterTab( 'all' )
 
     // Select the form
-    const form = document.querySelector(".contactUs form");
+    const form = document.querySelector( ".contactUs form" );
 
     // Handle the form's submit event
-    form?.addEventListener("submit", (event) => {
+    form?.addEventListener( "submit", ( event ) => {
       // Prevent the form from submitting to the server
       event.preventDefault();
 
       // Collect form data
-      const fullName = form.querySelector('input[placeholder="الاسم بالكامل"]').value;
-      const phoneNumber = form.querySelector('input[placeholder="رقم التليفون"]').value;
-      const email = form.querySelector('input[placeholder="البريد الالكتروني"]').value;
-      const comment = form.querySelector('textarea[placeholder="تعليقك"]').value;
-      const isNotRobot = form.querySelector('input[type="checkbox"]').checked;
+      const fullName = form.querySelector( 'input[placeholder="الاسم بالكامل"]' ).value;
+      const phoneNumber = form.querySelector( 'input[placeholder="رقم التليفون"]' ).value;
+      const email = form.querySelector( 'input[placeholder="البريد الالكتروني"]' ).value;
+      const comment = form.querySelector( 'textarea[placeholder="تعليقك"]' ).value;
+      const isNotRobot = form.querySelector( 'input[type="checkbox"]' ).checked;
 
       // Create an object with the collected data
       const formData = {
@@ -431,10 +431,50 @@ function loadAllContentWhenNavigate() {
       };
 
       // Log the form data to the console
-      console.log("Collected Form Data:", formData);
+      console.log( "Collected Form Data:", formData );
 
       // You can send the data to the server here (e.g., using fetch or axios)
-    });
+    } );
+
+    // Select all image containers
+    const containerOfChairmanItem = document.querySelectorAll( ".item-container" );
+    const closeModalBtn = document.querySelector( ".close" );
+    const modal = document.getElementById( "imageModal" );
+    const modalImage = document.getElementById( "modalImage" );
+    const modalTitle = document.getElementById( "modalImageTitle" );
+    const modalDes = document.getElementById( "modalImageDescription" );
+
+    containerOfChairmanItem.forEach( item => {
+
+      item.addEventListener( "click", ( res ) => {
+        console.log( 'res', res )
+
+        console.log( '1', item.children )
+        const imgSrc = item.children[0].children[0].src;
+        const imgTitle = item.children[1].textContent;
+        const imgDes = item.children[2].textContent;
+        console.log( 'imgSrc', imgSrc )
+        console.log( 'imgTitle', imgTitle )
+        console.log( 'imgDes', imgDes )
+        // Show the modal
+        modal.style.display = "flex";
+        modalImage.src = imgSrc;
+        modalTitle.innerText = imgTitle;
+        modalDes.innerText = imgDes;
+      } );
+    } );
+
+    // Close the modal when clicking the close button
+    closeModalBtn.addEventListener( "click", () => {
+      modal.style.display = "none";
+    } );
+
+    // Close the modal when clicking outside the modal content
+    window.addEventListener( "click", event => {
+      if( event.target === modal ) {
+        modal.style.display = "none";
+      }
+    } );
   }, 200 ); // adjust the delay as necessary
 }
 
